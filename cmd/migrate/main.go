@@ -233,10 +233,7 @@ func main() {
 	// For boltdb shipper this is important as it will upload all the index files.
 	d.Stop()
 
-	log.Println("Going to sleep....")
-	for {
-		time.Sleep(100 * time.Second)
-	}
+	log.Println("Successfully performed the migration")
 }
 
 func calcSyncRanges(from, to int64, shardBy int64) []*syncRange {
