@@ -5,6 +5,6 @@ WORKDIR /src/loki
 RUN make clean && make BUILD_IN_CONTAINER=false migrate
 
 FROM alpine:3.20.2
-RUN apk add --update --no-cache ca-certificates curl jq
+RUN apk add --update --no-cache ca-certificates curl jq tmux
 COPY --from=build /src/loki/cmd/migrate/migrate /usr/bin/migrate
 CMD tail -f /dev/null
