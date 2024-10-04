@@ -217,6 +217,7 @@ func main() {
 		log.Println("Exiting stats thread")
 	}()
 
+	errHappened := false
 	// Wait for an error or the context to be canceled
 	select {
 	case <-cancelContext.Done():
@@ -224,6 +225,7 @@ func main() {
 	case err := <-errorChan:
 		log.Println("Received an error from processing thread, shutting down: ", err)
 		cancelFunc()
+		errHappened = true
 	}
 	log.Println("Waiting for threads to exit")
 	wg.Wait()
@@ -233,6 +235,10 @@ func main() {
 	// For boltdb shipper this is important as it will upload all the index files.
 	d.Stop()
 
+	if errHappened {
+		log.Println("Could not perform the migration completely")
+		os.Exit(1)
+	}
 	log.Println("Successfully performed the migration")
 }
 
