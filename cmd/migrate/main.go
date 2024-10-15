@@ -226,6 +226,11 @@ func main() {
 		log.Println("Received an error from processing thread, shutting down: ", err)
 		cancelFunc()
 		errHappened = true
+		go func() {
+			for err := range errorChan {
+				log.Println("Received an error from processing thread, shutting down: ", err)
+			}
+		}()
 	}
 	log.Println("Waiting for threads to exit")
 	wg.Wait()
